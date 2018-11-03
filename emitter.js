@@ -40,7 +40,11 @@ function getEmitter() {
          * @returns {this}
          */
         off: function (event, context) {
-            const removeEvents = [...events.keys()].filter(e => e.startsWith(event));
+            const allEvents = [...events.keys()];
+            const removeEvents = allEvents.filter(e => e.startsWith(event + '.'));
+            if (events.has(event)) {
+                removeEvents.push(event);
+            }
 
             removeEvents.forEach(e => {
                 if (events.get(e)) {
