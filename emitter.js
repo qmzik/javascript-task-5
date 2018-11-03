@@ -124,14 +124,13 @@ function getEventsForEmit(event) {
 }
 
 function callEvent(sub) {
+    sub.called++;
     if (sub.star.times <= sub.called) {
         return;
     }
     if (sub.called % sub.star.step === 0) {
         sub.handler.call(sub.context);
     }
-
-    sub.called++;
 }
 
 module.exports = {
