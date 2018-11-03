@@ -124,7 +124,7 @@ function getEventsForEmit(event) {
 }
 
 function callEvent(sub) {
-    if (sub.star.times <= sub.called) {
+    if (sub.star.times === sub.called) {
         return;
     }
     if (sub.called % sub.star.step === 0) {
