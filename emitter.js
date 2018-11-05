@@ -23,9 +23,16 @@ function getEmitter() {
          * @param {Object} star
          * @returns {this}
          */
-        on: function (event, context, handler, star = { times: Infinity, step: 1 }) {
+        on: function (event, context, handler) {
             if (!events.has(event)) {
                 events.set(event, []);
+            }
+
+            let star = {};
+            if (arguments[3]) {
+                star = arguments[3];
+            } else {
+                star = { times: Infinity, step: 1 };
             }
 
             events.get(event).push({ context, handler, star, called: 0 });
