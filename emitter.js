@@ -13,6 +13,16 @@ const isStar = true;
 function getEmitter() {
     let events = new Map();
 
+    function addEvent(event, context, handler, star = { times: Infinity, step: 1 }) {
+        if (!events.has(event)) {
+            events.set(event, []);
+        }
+
+        events.get(event).push({ context, handler, star, called: 0 });
+
+        return this;
+    }
+
     return {
 
         /**
@@ -24,18 +34,7 @@ function getEmitter() {
          * @returns {this}
          */
         on: function (event, context, handler) {
-            if (!events.has(event)) {
-                events.set(event, []);
-            }
-
-            let star = {};
-            if (arguments[3]) {
-                star = arguments[3];
-            } else {
-                star = { times: Infinity, step: 1 };
-            }
-
-            events.get(event).push({ context, handler, star, called: 0 });
+            addEvent(event, context, handler);
 
             return this;
         },
@@ -92,7 +91,7 @@ function getEmitter() {
             if (times <= 0) {
                 times = Infinity;
             }
-            this.on(event, context, handler, { times, step: 1 });
+            addEvent(event, context, handler, { times, step: 1 });
 
             return this;
         },
@@ -110,7 +109,7 @@ function getEmitter() {
             if (frequency <= 0) {
                 frequency = 1;
             }
-            this.on(event, context, handler, { times: Infinity, step: frequency });
+            addEvent(event, context, handler, { times: Infinity, step: frequency });
 
             return this;
         }
